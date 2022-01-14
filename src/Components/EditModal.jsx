@@ -7,8 +7,10 @@ import {
   UpdateTodoLoading,
   UpdateTodoSuccess,
 } from "../Store/Todos/Actions";
+import { useParams } from "react-router-dom";
 
-export default function EditModal({ defaultText, id }) {
+export default function EditModal({ defaultText }) {
+  const { id } = useParams();
   const [text, setText] = React.useState();
   const { setEditBox } = React.useContext(context);
   const { loading, error } = useSelector((state) => ({

@@ -1,3 +1,16 @@
 {
-  "todos": []
+  "todos": [
+    {
+      "status": false,
+      "title": "Vikas Kumar",
+      "id": 1,
+      "completed": true
+    },
+    {
+      "status": "true",
+      "title": "Kumar Rathod",
+      "id": 2,
+      "completed": true
+    }
+  ]
 }

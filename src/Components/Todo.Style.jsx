@@ -29,8 +29,11 @@ export const Div = styled.div`
     align-items: center;
     justify-content: space-between;
     margin: 5px;
+    & .complete {
+      width: 10%;
+    }
     & .title {
-      width: 60%;
+      width: 50%;
     }
     & .staus {
       width: 10%;

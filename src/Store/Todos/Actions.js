@@ -11,6 +11,9 @@ import {
   REMOVE_TODO_LOADING,
   REMOVE_TODO_SUCCESS,
   REMOVE_TODO_ERROR,
+  DETAILS_TODO_LOADING,
+  DETAILS_TODO_SUCCESS,
+  DETAILS_TODO_ERROR,
 } from "./ActionTypes";
 
 export const AddTodoLoading = () => {
@@ -87,6 +90,26 @@ export const RemoveTodoSuccess = () => {
 export const RemoveTodoError = (error) => {
   return {
     type: REMOVE_TODO_ERROR,
+    payload: error,
+  };
+};
+
+export const DetailsTodoLoading = () => {
+  return {
+    type: DETAILS_TODO_LOADING,
+  };
+};
+
+export const DetailsTodoSuccess = (data) => {
+  return {
+    type: DETAILS_TODO_SUCCESS,
+    payload: data,
+  };
+};
+
+export const DetailsTodoError = (error) => {
+  return {
+    type: DETAILS_TODO_ERROR,
     payload: error,
   };
 };

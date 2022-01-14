@@ -11,9 +11,12 @@ import {
   REMOVE_TODO_ERROR,
   REMOVE_TODO_LOADING,
   REMOVE_TODO_SUCCESS,
+  DETAILS_TODO_ERROR,
+  DETAILS_TODO_LOADING,
+  DETAILS_TODO_SUCCESS,
 } from "./ActionTypes";
 
-const init = { loading: false, data: [], error: false };
+const init = { loading: false, data: [], error: false, details: [], total: [] };
 export const Reducer = (state = init, { type, payload }) => {
   switch (type) {
     case ADD_TODO_LOADING:
@@ -45,6 +48,10 @@ export const Reducer = (state = init, { type, payload }) => {
       return {
         ...state,
         data: payload,
+        total: payload.map((e) => {
+          if (e.completed) return e;
+          return null;
+        }),
         loading: false,
         error: false,
       };
@@ -79,13 +86,31 @@ export const Reducer = (state = init, { type, payload }) => {
         error: false,
       };
     case REMOVE_TODO_SUCCESS:
-      console.log(state);
       return {
         ...state,
         loading: false,
         error: false,
       };
     case REMOVE_TODO_ERROR:
+      return {
+        ...state,
+        error: true,
+        loading: false,
+      };
+    case DETAILS_TODO_LOADING:
+      return {
+        ...state,
+        loading: true,
+        error: false,
+      };
+    case DETAILS_TODO_SUCCESS:
+      return {
+        ...state,
+        details: payload,
+        loading: false,
+        error: false,
+      };
+    case DETAILS_TODO_ERROR:
       return {
         ...state,
         error: true,

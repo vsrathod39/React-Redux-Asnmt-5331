@@ -10,7 +10,11 @@ import {
   RemoveTodoError,
   RemoveTodoLoading,
   RemoveTodoSuccess,
+  UpdateTodoError,
+  UpdateTodoLoading,
+  UpdateTodoSuccess,
 } from "../Store/Todos/Actions";
+import { Link } from "react-router-dom";
 import EditModal from "./EditModal";
 import { Div, Input, Button } from "./Todo.Style";
 import { context } from "../Context/ContextProvoder";
@@ -20,7 +24,7 @@ export default function Todos() {
   const [defaultText, setDefaultText] = React.useState();
   const { editBox, setEditBox } = React.useContext(context);
   const [id, setId] = React.useState();
-  const [update, setUpdated] = React.useState(false);
+  const [update, setUpdate] = React.useState(false);
 
   const { loading, todos, error } = useSelector((state) => ({
     loading: state.loading,
@@ -44,6 +48,26 @@ export default function Todos() {
   }, [editBox, update]);
 
   const handleChange = (e) => {
+    if (e?.target?.checked || !e?.target?.checked) {
+      console.log(e.target.checked);
+      dispatch(UpdateTodoLoading());
+      fetch(`http://localhost:3001/todos/${e.target.id}`, {
+        method: "PATCH",
+        body: JSON.stringify({ completed: e.target.checked }),
+        headers: { "Content-Type": "application/json" },
+      })
+        .then((res) => {
+          return res.json();
+        })
+        .then((data) => {
+          dispatch(UpdateTodoSuccess());
+          setUpdate((p) => ~p);
+        })
+        .catch((error) => {
+          dispatch(UpdateTodoError(error));
+        });
+      return;
+    }
     setText(e.target.value);
   };
 
@@ -51,7 +75,7 @@ export default function Todos() {
     dispatch(AddTodoLoading());
     fetch("http://localhost:3001/todos", {
       method: "POST",
-      body: JSON.stringify({ status: false, title: text }),
+      body: JSON.stringify({ status: false, title: text, completed: false }),
       headers: { "Content-Type": "application/json" },
     })
       .then((res) => {
@@ -79,14 +103,12 @@ export default function Todos() {
     dispatch(RemoveTodoLoading());
     fetch(`http://localhost:3001/todos/${e.target.id}`, {
       method: "DELETE",
-      // body: JSON.stringify(text),
-      // headers: { "Content-Type": "application/json" },
     })
       .then((res) => {
         return res.json();
       })
       .then((data) => {
-        setUpdated((p) => !p);
+        setUpdate((p) => ~p);
       })
       .catch((error) => {
         console.log(error);
@@ -96,7 +118,7 @@ export default function Todos() {
 
   return (
     <div>
-      <Input onChange={handleChange} type="text" placeholder="Todos" />
+      <Input onChange={handleChange} type="text" placeholder="Add Todos" />
       <Button onClick={handleSubmit}>Add</Button>
       <hr />
       {loading ? (
@@ -106,6 +128,7 @@ export default function Todos() {
       ) : todos ? (
         <Div>
           <div>
+            <p className="complete">Completd</p>
             <p className="title">Title</p>
             <p className="status">Status</p>
             <p className="edit">Edit</p>
@@ -113,12 +136,34 @@ export default function Todos() {
           </div>
           {todos.map((e) => (
             <div key={e.id}>
-              <p className="title">{e.title}</p>
+              {e.completed ? (
+                <input
+                  id={e.id}
+                  onChange={handleChange}
+                  className="complete"
+                  type="checkbox"
+                  name="completed"
+                  checked
+                />
+              ) : (
+                <input
+                  id={e.id}
+                  onChange={handleChange}
+                  className="complete"
+                  type="checkbox"
+                  name="completed"
+                />
+              )}
+              <p className="title">
+                <Link to={`/todo/${e.id}`}>{e.title}</Link>
+              </p>
               <p className="status">{String(e.status)}</p>
               <button
                 value={e.title}
                 id={e.id}
-                onClick={handleEditClick}
+                onClick={() => {
+                  window.location.href = `/todo/:${e.id}/edit`;
+                }}
                 className="edit"
                 style={{ cursor: "pointer" }}
               >
@@ -137,6 +182,7 @@ export default function Todos() {
         </Div>
       ) : null}
       {editBox ? <EditModal id={id} defaultText={defaultText} /> : null}
+      <Link to="/todos/pending">See total pending task</Link>
     </div>
   );
 }

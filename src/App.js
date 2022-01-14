@@ -1,15 +1,12 @@
 import "./App.css";
-import Todos from "./Components/Todos";
-import Counter from "./Components/Counter";
+import RoutesHandler from "./Routes/RoutesHandler";
 
 function App() {
   return (
-    <>
-      <div className="App">
-        <hr />
-        <Todos />
-      </div>
-    </>
+    <div className="App">
+      <hr />
+      <RoutesHandler />
+    </div>
   );
 }
 
