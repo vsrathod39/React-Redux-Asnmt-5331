@@ -48,8 +48,10 @@ export default function Todos() {
   }, [editBox, update]);
 
   const handleChange = (e) => {
-    if (e?.target?.checked || !e?.target?.checked) {
-      console.log(e.target.checked);
+    if (
+      (e?.target?.checked || !e?.target?.checked) &&
+      e.target.name !== "title"
+    ) {
       dispatch(UpdateTodoLoading());
       fetch(`http://localhost:3001/todos/${e.target.id}`, {
         method: "PATCH",
@@ -118,7 +120,12 @@ export default function Todos() {
 
   return (
     <div>
-      <Input onChange={handleChange} type="text" placeholder="Add Todos" />
+      <Input
+        onChange={handleChange}
+        type="text"
+        placeholder="Add Todos"
+        name="title"
+      />
       <Button onClick={handleSubmit}>Add</Button>
       <hr />
       {loading ? (
@@ -161,9 +168,7 @@ export default function Todos() {
               <button
                 value={e.title}
                 id={e.id}
-                onClick={() => {
-                  window.location.href = `/todo/:${e.id}/edit`;
-                }}
+                onClick={handleEditClick}
                 className="edit"
                 style={{ cursor: "pointer" }}
               >

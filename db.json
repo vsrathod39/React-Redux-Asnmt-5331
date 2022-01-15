@@ -2,15 +2,39 @@
   "todos": [
     {
       "status": false,
-      "title": "Vikas Kumar",
-      "id": 1,
-      "completed": true
+      "title": "Learn React fast",
+      "completed": false,
+      "id": 1
     },
     {
       "status": "true",
-      "title": "Kumar Rathod",
-      "id": 2,
-      "completed": true
+      "title": "React Reduc Hooks",
+      "completed": false,
+      "id": 2
+    },
+    {
+      "status": false,
+      "title": "Javascript Hoisting",
+      "completed": true,
+      "id": 3
+    },
+    {
+      "status": false,
+      "title": "Contest",
+      "completed": false,
+      "id": 5
+    },
+    {
+      "status": "true",
+      "title": "HR Work Time",
+      "completed": true,
+      "id": 6
+    },
+    {
+      "status": false,
+      "title": "Standup",
+      "completed": true,
+      "id": 7
     }
   ]
 }

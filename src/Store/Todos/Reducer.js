@@ -48,9 +48,8 @@ export const Reducer = (state = init, { type, payload }) => {
       return {
         ...state,
         data: payload,
-        total: payload.map((e) => {
-          if (e.completed) return e;
-          return null;
+        total: payload.filter((e) => {
+          if (!e.completed) return e;
         }),
         loading: false,
         error: false,
